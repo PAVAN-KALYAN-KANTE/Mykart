@@ -4,7 +4,6 @@ const sendToken = require("../utils/sendToken");
 const ErrorHandler = require("../utils/errorHandler");
 const sendEmail = require("../utils/sendEmail");
 const crypto = require("crypto");
-const cloudinary = require("cloudinary");
 
 // Register User
 exports.registerUser = asyncErrorHandler(async (req, res, next) => {
@@ -70,21 +69,6 @@ exports.getUserDetails = asyncErrorHandler(async (req, res, next) => {
   });
 });
 
-// Update Password
-exports.updatePassword = asyncErrorHandler(async (req, res, next) => {
-  const user = await User.findById(req.user.id).select("+password");
-
-  const isPasswordMatched = await user.comparePassword(req.body.oldPassword);
-
-  if (!isPasswordMatched) {
-    return next(new ErrorHandler("Old Password is Invalid", 400));
-  }
-
-  user.password = req.body.newPassword;
-  await user.save();
-  sendToken(user, 201, res);
-});
-
 // Update User Profile
 exports.updateProfile = asyncErrorHandler(async (req, res, next) => {
   const newUserData = {
@@ -132,42 +116,5 @@ exports.getSingleUser = asyncErrorHandler(async (req, res, next) => {
   res.status(200).json({
     success: true,
     user,
-  });
-});
-
-// Update User Role --ADMIN
-exports.updateUserRole = asyncErrorHandler(async (req, res, next) => {
-  const newUserData = {
-    name: req.body.name,
-    email: req.body.email,
-    gender: req.body.gender,
-    role: req.body.role,
-  };
-
-  await User.findByIdAndUpdate(req.params.id, newUserData, {
-    new: true,
-    runValidators: true,
-    useFindAndModify: false,
-  });
-
-  res.status(200).json({
-    success: true,
-  });
-});
-
-// Delete Role --ADMIN
-exports.deleteUser = asyncErrorHandler(async (req, res, next) => {
-  const user = await User.findById(req.params.id);
-
-  if (!user) {
-    return next(
-      new ErrorHandler(`User doesn't exist with id: ${req.params.id}`, 404)
-    );
-  }
-
-  await user.remove();
-
-  res.status(200).json({
-    success: true,
   });
 });
