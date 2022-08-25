@@ -10,7 +10,7 @@ exports.registerUser = asyncErrorHandler(async (req, res, next) => {
   console.log(1);
 
   const { name, email, gender, password } = req.body;
-  //console.log(req.body);
+  console.log(req.body);
 
   const user = await User.create({
     name,

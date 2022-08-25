@@ -73,23 +73,10 @@ exports.createProduct = asyncErrorHandler(async (req, res, next) => {
     images = req.body.images;
   }
 
-  const imagesLink = [];
-
-  for (let i = 0; i < images.length; i++) {
-    const result = await cloudinary.v2.uploader.upload(images[i], {
-      folder: "products",
-    });
-
-    imagesLink.push({
-      public_id: result.public_id,
-      url: result.secure_url,
-    });
-  }
-
   req.body.brand = {
     name: req.body.brandname,
   };
-  req.body.images = imagesLink;
+  req.body.images = images;
   req.body.user = req.user.id;
 
   let specs = [];
