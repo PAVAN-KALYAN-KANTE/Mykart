@@ -74,14 +74,14 @@ exports.createProduct = asyncErrorHandler(async (req, res, next) => {
   }
 
   req.body.brand = {
-    name: req.body.brandname,
+    name: req.body.brand.name,
   };
   req.body.images = images;
   req.body.user = req.user.id;
 
   let specs = [];
   req.body.specifications.forEach((s) => {
-    specs.push(JSON.parse(s));
+    specs.push(JSON.parse(JSON.stringify(s)));
   });
   req.body.specifications = specs;
 

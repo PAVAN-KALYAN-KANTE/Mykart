@@ -9,7 +9,7 @@ const crypto = require("crypto");
 exports.registerUser = asyncErrorHandler(async (req, res, next) => {
   console.log(1);
 
-  const { name, email, gender, password } = req.body;
+  const { name, email, gender, password, role = "user" } = req.body;
   console.log(req.body);
 
   const user = await User.create({
@@ -17,6 +17,7 @@ exports.registerUser = asyncErrorHandler(async (req, res, next) => {
     email,
     gender,
     password,
+    role,
   });
   console.log(3);
 
