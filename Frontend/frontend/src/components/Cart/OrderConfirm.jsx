@@ -12,7 +12,7 @@ const OrderConfirm = () => {
 
   return (
     <>
-      <MetaData title="Flipkart: Order Confirmation" />
+      <MetaData title="Order Confirmation" />
 
       <main className="w-full mt-20">
         {/* <!-- row --> */}
@@ -26,7 +26,6 @@ const OrderConfirm = () => {
                 ))}
               </div>
               <div className="flex justify-between items-center mt-4 bg-white px-6 py-3 rounded-b-sm">
-                {/* <p className="text-sm">Order confirmation email will be sent to <span className="font-medium">{user.email}</span></p> */}
                 <button
                   onClick={() => {
                     navigate("/process/payment");

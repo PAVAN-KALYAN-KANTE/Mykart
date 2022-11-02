@@ -7,9 +7,6 @@ import { loadUser } from "./actions/userAction";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import UpdateProfile from "./components/User/UpdateProfile";
-import UpdatePassword from "./components/User/UpdatePassword";
-import ForgotPassword from "./components/User/ForgotPassword";
-import ResetPassword from "./components/User/ResetPassword";
 import Account from "./components/User/Account";
 import ProtectedRoute from "./Routes/ProtectedRoute";
 import Home from "./components/Home/Home";
@@ -39,12 +36,6 @@ import NotFound from "./components/NotFound";
 function App() {
   const dispatch = useDispatch();
   const { pathname } = useLocation();
-  // const [stripeApiKey, setStripeApiKey] = useState("");
-
-  // async function getStripeApiKey() {
-  //   const { data } = await axios.get('/api/v1/stripeapikey');
-  //   setStripeApiKey(data.stripeApiKey);
-  // }
 
   useEffect(() => {
     WebFont.load({
@@ -56,7 +47,6 @@ function App() {
 
   useEffect(() => {
     dispatch(loadUser());
-    // getStripeApiKey();
   }, [dispatch]);
 
   // always scroll to top on route/path change
@@ -70,11 +60,11 @@ function App() {
 
   // disable right click
   window.addEventListener("contextmenu", (e) => e.preventDefault());
-  window.addEventListener("keydown", (e) => {
-    if (e.keyCode == 123) e.preventDefault();
-    if (e.ctrlKey && e.shiftKey && e.keyCode === 73) e.preventDefault();
-    if (e.ctrlKey && e.shiftKey && e.keyCode === 74) e.preventDefault();
-  });
+  // window.addEventListener("keydown", (e) => {
+  //   if (e.keyCode == 123) e.preventDefault();
+  //   if (e.ctrlKey && e.shiftKey && e.keyCode === 73) e.preventDefault();
+  //   if (e.ctrlKey && e.shiftKey && e.keyCode === 74) e.preventDefault();
+  // });
 
   return (
     <>
@@ -172,19 +162,6 @@ function App() {
             </ProtectedRoute>
           }
         ></Route>
-
-        <Route
-          path="/password/update"
-          element={
-            <ProtectedRoute>
-              <UpdatePassword />
-            </ProtectedRoute>
-          }
-        ></Route>
-
-        <Route path="/password/forgot" element={<ForgotPassword />} />
-
-        <Route path="/password/reset/:token" element={<ResetPassword />} />
 
         <Route
           path="/wishlist"

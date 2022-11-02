@@ -77,9 +77,7 @@ exports.updateProfile = asyncErrorHandler(async (req, res, next) => {
     email: req.body.email,
   };
 
-  if (req.body.avatar !== "") {
-    const user = await User.findById(req.user.id);
-  }
+  const user = await User.findById(req.user.id);
 
   await User.findByIdAndUpdate(req.user.id, newUserData, {
     new: true,

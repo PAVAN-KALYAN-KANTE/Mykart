@@ -39,7 +39,7 @@ const Login = () => {
 
   return (
     <>
-      <MetaData title="Login | Flipkart" />
+      <MetaData title="Login" />
 
       {loading && <BackdropLoader />}
       <main className="w-full mt-12 sm:pt-20 sm:mt-0">
@@ -79,7 +79,6 @@ const Login = () => {
                     onChange={(e) => setPassword(e.target.value)}
                     required
                   />
-                  {/* <span className="text-xxs text-red-500 font-medium text-left mt-0.5">Please enter valid Email ID/Mobile number</span> */}
 
                   {/* <!-- button container --> */}
                   <div className="flex flex-col gap-2.5 mt-2 mb-32">
@@ -99,7 +98,7 @@ const Login = () => {
                 to="/register"
                 className="font-medium text-sm text-primary-blue"
               >
-                New to Flipkart? Create an account
+                New to Store? Create an account
               </Link>
             </div>
             {/* <!-- edit info container --> */}
