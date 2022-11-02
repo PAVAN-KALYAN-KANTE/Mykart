@@ -25,18 +25,6 @@ exports.newOrder = asyncErrorHandler(async (req, res, next) => {
     user: req.user._id,
   });
 
-  await sendEmail({
-    email: req.user.email,
-    templateId: process.env.SENDGRID_ORDER_TEMPLATEID,
-    data: {
-      name: req.user.name,
-      shippingInfo,
-      orderItems,
-      totalPrice,
-      oid: order._id,
-    },
-  });
-
   res.status(201).json({
     success: true,
     order,
@@ -45,7 +33,7 @@ exports.newOrder = asyncErrorHandler(async (req, res, next) => {
 
 // Get Single Order Details
 exports.getSingleOrderDetails = asyncErrorHandler(async (req, res, next) => {
-  const order = await Order.findById(req.params.id).populate(
+  const order = await Order.find({ orderId: req.params.id }).populate(
     "user",
     "name email"
   );

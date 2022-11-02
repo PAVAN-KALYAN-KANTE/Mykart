@@ -3,9 +3,10 @@ const nodeMailer = require("nodemailer");
 //sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 const sendEmail = async (options) => {
+  console.log("Sending email", options);
   const transporter = nodeMailer.createTransport({
-    host: process.env.SMTP_HOST,
-    port: process.env.SMTP_PORT,
+    //host: process.env.SMTP_HOST,
+    //port: process.env.SMTP_PORT,
     service: process.env.SMTP_SERVICE,
     auth: {
       user: process.env.SMTP_MAIL,

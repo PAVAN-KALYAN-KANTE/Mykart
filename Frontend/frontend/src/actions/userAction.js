@@ -270,11 +270,7 @@ export const updateUser = (id, userData) => async (dispatch) => {
       },
     };
 
-    const { data } = await axios.put(
-      `/api/v1/admin/user/${id}`,
-      userData,
-      config
-    );
+    const { data } = await axios.put(`/admin/user/${id}`, userData, config);
 
     dispatch({
       type: UPDATE_USER_SUCCESS,
@@ -292,7 +288,7 @@ export const updateUser = (id, userData) => async (dispatch) => {
 export const deleteUser = (id) => async (dispatch) => {
   try {
     dispatch({ type: DELETE_USER_REQUEST });
-    const { data } = await axios.delete(`/api/v1/admin/user/${id}`);
+    const { data } = await axios.delete(`/admin/user/${id}`);
 
     dispatch({
       type: DELETE_USER_SUCCESS,

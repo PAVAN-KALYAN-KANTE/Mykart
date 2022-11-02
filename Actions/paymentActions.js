@@ -39,14 +39,14 @@ exports.processPayment = asyncErrorHandler(async (req, res, next) => {
   params["ORDER_ID"] = "oid" + uuidv4();
   params["CUST_ID"] = process.env.PAYTM_CUST_ID;
   params["TXN_AMOUNT"] = JSON.stringify(amount);
-  // params["CALLBACK_URL"] = `${req.protocol}://${req.get("host")}/api/v1/callback`;
-  params["CALLBACK_URL"] = `https://${req.get("host")}/callback`;
+  params["CALLBACK_URL"] = `${req.protocol}://${req.get("host")}/callback`;
+  // params["CALLBACK_URL"] = `https://${req.get("host")}/callback`;
   params["EMAIL"] = email;
   params["MOBILE_NO"] = phoneNo;
 
   let paytmChecksum = paytm.generateSignature(
     params,
-    process.env.PAYTM_MERCHANT_KEY
+    process.env.PAYTM_MERCHANT_KEY + "#"
   );
   paytmChecksum
     .then(function (checksum) {
@@ -66,14 +66,14 @@ exports.processPayment = asyncErrorHandler(async (req, res, next) => {
 
 // Paytm Callback
 exports.paytmResponse = (req, res, next) => {
-  // console.log(req.body);
+  console.log(req.body);
 
   let paytmChecksum = req.body.CHECKSUMHASH;
   delete req.body.CHECKSUMHASH;
 
   let isVerifySignature = paytm.verifySignature(
     req.body,
-    process.env.PAYTM_MERCHANT_KEY,
+    process.env.PAYTM_MERCHANT_KEY + "#",
     paytmChecksum
   );
   if (isVerifySignature) {
@@ -89,7 +89,7 @@ exports.paytmResponse = (req, res, next) => {
     paytm
       .generateSignature(
         JSON.stringify(paytmParams.body),
-        process.env.PAYTM_MERCHANT_KEY
+        process.env.PAYTM_MERCHANT_KEY + "#"
       )
       .then(function (checksum) {
         paytmParams.head = {
@@ -117,16 +117,20 @@ exports.paytmResponse = (req, res, next) => {
         var response = "";
         var post_req = https.request(options, function (post_res) {
           post_res.on("data", function (chunk) {
+            console.log("chunk", chunk);
             response += chunk;
           });
 
           post_res.on("end", function () {
+            console.log("response", response);
+
             let { body } = JSON.parse(response);
-            // let status = body.resultInfo.resultStatus;
+            //console.log(body.json());
+            let status = body.resultInfo.resultStatus;
             // res.json(body);
             addPayment(body);
-            // res.redirect(`${req.protocol}://${req.get("host")}/order/${body.orderId}`)
-            res.redirect(`https://${req.get("host")}/order/${body.orderId}`);
+            res.redirect(`http://localhost:3000/order/${body.orderId}`);
+            // res.redirect(`https://${req.get("host")}/order/${body.orderId}`);
           });
         });
 
@@ -141,6 +145,7 @@ exports.paytmResponse = (req, res, next) => {
 
 const addPayment = async (data) => {
   try {
+    console.log("data", data);
     await Payment.create(data);
   } catch (error) {
     console.log("Payment Failed!");
